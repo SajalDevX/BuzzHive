@@ -44,15 +44,15 @@ dependencies {
     implementation(projects.shared)
     implementation(libs.compose.ui)
     implementation(libs.compose.ui.tooling.preview)
-    implementation("androidx.compose.material:material:1.4.3")
+    implementation("androidx.compose.material:material:1.6.8")
     implementation(libs.androidx.activity.compose)
     debugImplementation(libs.compose.ui.tooling)
+
     implementation("io.github.raamcosta.compose-destinations:core:1.8.38-beta")
     ksp("io.github.raamcosta.compose-destinations:ksp:1.8.38-beta")
 
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation("io.insert-koin:koin-androidx-compose:3.4.1")
 
