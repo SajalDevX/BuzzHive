@@ -111,7 +111,7 @@ fun CustomTextFieldPreview() {
         CustomTextField(
             value = "",
             onValueChange = {},
-            hint = androidx.compose.ui.R.string.default_error_message
+            hint = R.string.loading_error_message
         )
     }
 }

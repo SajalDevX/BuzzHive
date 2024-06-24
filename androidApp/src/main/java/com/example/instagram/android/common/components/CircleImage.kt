@@ -14,7 +14,7 @@ import com.example.instagram.android.R
 @Composable
 fun CircleImage(
     modifier: Modifier,
-    url: String,
+    url: String?,
     onClick: () -> Unit
 ) {
     AsyncImage(

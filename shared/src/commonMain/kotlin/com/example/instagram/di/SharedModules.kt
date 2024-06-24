@@ -44,4 +44,4 @@ private val followsModule = module {
     single<FollowsRepository> { FollowsRepositoryImpl(get(), get(), get()) }
 }
 
-fun getSharedModules() = listOf(authModule, utilityModule,platformModule)
+fun getSharedModules() = listOf(authModule, utilityModule,platformModule, postModule, followsModule)

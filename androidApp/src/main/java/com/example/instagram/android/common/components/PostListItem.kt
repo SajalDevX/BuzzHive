@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.instagram.android.R
-import com.example.instagram.android.common.dummy_data.Post
-import com.example.instagram.android.common.dummy_data.samplePosts
+import com.example.instagram.android.common.dummy_data.SamplePost
+import com.example.instagram.android.common.dummy_data.sampleSamplePosts
 import com.example.instagram.android.common.theming.DarkGray
 import com.example.instagram.android.common.theming.InstagramTheme
 import com.example.instagram.android.common.theming.LargeSpacing
@@ -43,11 +43,11 @@ import com.example.instagram.android.common.theming.MediumSpacing
 @Composable
 fun PostListItem(
     modifier: Modifier = Modifier,
-    post: Post,
-    onPostClick: (Post) -> Unit,
+    samplePost: SamplePost,
+    onPostClick: (SamplePost) -> Unit,
     onProfileClick: (Int) -> Unit,
-    onLikeClick: (String) -> Unit,
-    onCommentClick: (String) -> Unit,
+    onLikeClick: (SamplePost) -> Unit,
+    onCommentClick: (SamplePost) -> Unit,
     isDetailScreen: Boolean = false
 ) {
     Column(
@@ -55,21 +55,21 @@ fun PostListItem(
             .fillMaxWidth()
             .aspectRatio(ratio = 0.7f)
             .background(color = MaterialTheme.colors.surface)
-            .clickable { onPostClick(post) }
+            .clickable { onPostClick(samplePost) }
     ) {
         PostHeader(
-            name = post.authorName,
-            profileUrl = post.authorImage,
-            date = post.createdAt,
+            name = samplePost.authorName,
+            profileUrl = samplePost.authorImage,
+            date = samplePost.createdAt,
             onProfileClick = {
                 onProfileClick(
-                    post.authorId
+                    samplePost.authorId
                 )
             }
         )
 
         AsyncImage(
-            model = post.imageUrl,
+            model = samplePost.imageUrl,
             contentDescription = null,
             modifier = modifier
                 .fillMaxWidth()
@@ -83,14 +83,14 @@ fun PostListItem(
         )
 
         PostLikesRow(
-            likesCount = post.likesCount,
-            commentCount = post.commentCount,
-            onLikeClick = { onLikeClick(post.id) },
-            onCommentClick = { onCommentClick(post.id) }
+            likesCount = samplePost.likesCount,
+            commentCount = samplePost.commentCount,
+            onLikeClick = { onLikeClick(samplePost) },
+            onCommentClick = { onCommentClick(samplePost) }
         )
 
         Text(
-            text = post.text,
+            text = samplePost.text,
             style = MaterialTheme.typography.body2,
             modifier = modifier.padding(horizontal = LargeSpacing),
             maxLines = if (isDetailScreen) 10 else 2,
@@ -236,7 +236,7 @@ private fun PostListItemPreview() {
     InstagramTheme {
         Surface(color = MaterialTheme.colors.surface) {
             PostListItem(
-                post = samplePosts.first(),
+                samplePost = sampleSamplePosts.first(),
                 onPostClick = {},
                 onProfileClick = {},
                 onCommentClick = {},

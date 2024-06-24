@@ -39,7 +39,7 @@ import com.example.instagram.android.R
 import com.example.instagram.android.common.components.CircleImage
 import com.example.instagram.android.common.components.FollowsButton
 import com.example.instagram.android.common.components.PostListItem
-import com.example.instagram.android.common.dummy_data.Post
+import com.example.instagram.android.common.dummy_data.SamplePost
 import com.example.instagram.android.common.theming.InstagramTheme
 import com.example.instagram.android.common.theming.LargeSpacing
 import com.example.instagram.android.common.theming.MediumSpacing
@@ -53,7 +53,7 @@ fun ProfileScreen(
     onButtonClick: () -> Unit,
     onFollowersClick: () -> Unit,
     onFollowingClick: () -> Unit,
-    onPostClick: (Post) -> Unit,
+    onPostClick: (SamplePost) -> Unit,
     onLikeClick: (String) -> Unit,
     onCommentClick: (String) -> Unit,
     fetchData: () -> Unit
@@ -81,15 +81,15 @@ fun ProfileScreen(
             }
 
             items(
-                items = profilePostsUiState.posts,
+                items = profilePostsUiState.samplePosts,
                 key = {post -> post.id}
             ){
                 PostListItem(
-                    post = it,
+                    samplePost = it,
                     onPostClick = onPostClick,
                     onProfileClick = {},
-                    onLikeClick = onLikeClick,
-                    onCommentClick = onCommentClick
+                    onLikeClick = {},
+                    onCommentClick = {}
                 )
             }
         }

@@ -1,4 +1,4 @@
-package com.dipumba.ytsocialapp.android.home.onboarding
+package com.example.instagram.android.home.onboarding
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
@@ -24,11 +24,12 @@ import androidx.compose.ui.unit.dp
 import com.example.instagram.android.R
 import com.example.instagram.android.common.components.CircleImage
 import com.example.instagram.android.common.components.FollowsButton
-import com.example.instagram.android.common.dummy_data.FollowsUser
 import com.example.instagram.android.common.dummy_data.sampleUsers
 import com.example.instagram.android.common.theming.InstagramTheme
 import com.example.instagram.android.common.theming.MediumSpacing
 import com.example.instagram.android.common.theming.SmallSpacing
+import com.example.instagram.android.common.util.toCurrentUrl
+import com.example.instagram.common.domain.model.FollowsUser
 
 @Composable
 fun OnBoardingUserItem(
@@ -55,7 +56,7 @@ fun OnBoardingUserItem(
         ) {
             CircleImage(
                 modifier = modifier.size(50.dp),
-                url = followsUser.profileUrl,
+                url = followsUser.imageUrl?.toCurrentUrl(),
                 onClick = {}
             )
 
@@ -71,12 +72,12 @@ fun OnBoardingUserItem(
             Spacer(modifier = modifier.height(MediumSpacing))
 
             FollowsButton(
-                text = R.string.follow_text_label,
+                text = if (!followsUser.isFollowing) R.string.follow_text_label else R.string.unfollow_text_label,
                 onClick = { onFollowButtonClick(!isFollowing, followsUser) },
                 modifier = modifier
                     .heightIn(30.dp)
                     .widthIn(100.dp),
-                isOutlined = isFollowing
+                isOutlined = followsUser.isFollowing
             )
         }
     }
@@ -87,7 +88,7 @@ fun OnBoardingUserItem(
 private fun OnBoardingUserPreview() {
     InstagramTheme {
         OnBoardingUserItem(
-            followsUser = sampleUsers.first(),
+            followsUser = sampleUsers.first().toFollowsUser(),
             onUserClick = {},
             onFollowButtonClick = { _, _ -> })
     }

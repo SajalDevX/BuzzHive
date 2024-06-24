@@ -20,50 +20,51 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.instagram.android.common.components.PostListItem
-import com.dipumba.ytsocialapp.android.home.onboarding.OnBoardingSection
+import com.example.instagram.android.home.onboarding.OnBoardingSection
 import com.example.instagram.android.R
-import com.example.instagram.android.common.dummy_data.Post
+import com.example.instagram.android.common.dummy_data.SamplePost
 import com.example.instagram.android.common.theming.InstagramTheme
 import com.example.instagram.android.common.theming.LargeSpacing
-import com.example.instagram.android.common.dummy_data.FollowsUser
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
     onBoardingUiState: OnBoardingUiState,
-    homePostsUiState: HomePostsUiState,
-    onUserClick: (FollowsUser) -> Unit,
-    onFollowButtonClick: (Boolean,FollowsUser ) -> Unit,
-    onPostClick: (Post) -> Unit,
-    onProfileClick: (Int) -> Unit,
-    onLikeClick: (String) -> Unit,
-    onCommentClick: (String) -> Unit,
-    refreshData: () -> Unit,
-    onBoardingFinish: () -> Unit
+    postFeedUiState: PostFeedUiState,
+    homeRefreshState: HomeRefreshState,
+    onUiAction:(HomeUiAction)->Unit,
+    onProfileNavigation: (userId:Long) -> Unit,
+    onPostDetailNavigation: (SamplePost) -> Unit,
 ) {
 
     val pullRefreshState = rememberPullRefreshState(
-        refreshing = onBoardingUiState.isLoading && homePostsUiState.isLoading,
-        onRefresh = { refreshData() }
+        refreshing = homeRefreshState.isRefreshing,
+        onRefresh = { onUiAction(HomeUiAction.RefreshAction) },
     )
 
     Box(
         modifier = modifier
             .fillMaxSize()
             .pullRefresh(state = pullRefreshState)
-    ){
+    ) {
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
         ) {
-            if (onBoardingUiState.shouldShowOnBoarding){
+            if (onBoardingUiState.shouldShowOnBoarding) {
                 item {
                     OnBoardingSection(
                         users = onBoardingUiState.followableUsers,
-                        onUserClick = onUserClick,
-                        onFollowButtonClick = onFollowButtonClick,
-                        onBoardingFinish = onBoardingFinish
+                        onUserClick = { onProfileNavigation(it.id) },
+                        onFollowButtonClick = { _,user->
+                            onUiAction(
+                                HomeUiAction.FollowUserAction(user)
+                            )
+                        },
+                        onBoardingFinish = { onUiAction(HomeUiAction.RemoveOnBoardingAction) }
                     )
 
                     Text(
@@ -77,19 +78,19 @@ fun HomeScreen(
                 }
             }
 
-            items(items = homePostsUiState.posts, key = { post -> post.id }) {
+            items(items = postFeedUiState.samplePosts, key = { post -> post.id }) { post->
                 PostListItem(
-                    post = it,
-                    onPostClick = onPostClick,
-                    onProfileClick = onProfileClick,
-                    onLikeClick = onLikeClick,
-                    onCommentClick = onCommentClick
+                    samplePost = post,
+                    onPostClick = { onPostDetailNavigation(it) },
+                    onProfileClick = { onProfileNavigation(it.toLong()) },
+                    onLikeClick = { onUiAction(HomeUiAction.PostLikeAction(it.toDomainPost())) },
+                    onCommentClick = { onPostDetailNavigation(it) }
                 )
             }
         }
 
         PullRefreshIndicator(
-            refreshing = onBoardingUiState.isLoading && homePostsUiState.isLoading,
+            refreshing = homeRefreshState.isRefreshing,
             state = pullRefreshState,
             modifier = modifier.align(Alignment.TopCenter)
         )
@@ -104,15 +105,11 @@ private fun HomeScreenPreview() {
         Surface(color = MaterialTheme.colors.background) {
             HomeScreen(
                 onBoardingUiState = OnBoardingUiState(),
-                homePostsUiState = HomePostsUiState(),
-                onUserClick = {},
-                onFollowButtonClick = { _, _ -> },
-                onPostClick = {},
-                onProfileClick = {},
-                onLikeClick = {},
-                onCommentClick = {},
-                refreshData = {},
-                onBoardingFinish = {}
+                postFeedUiState = PostFeedUiState(),
+                onUiAction = {},
+                onProfileNavigation = {},
+                onPostDetailNavigation = {},
+                homeRefreshState = HomeRefreshState()
             )
         }
     }

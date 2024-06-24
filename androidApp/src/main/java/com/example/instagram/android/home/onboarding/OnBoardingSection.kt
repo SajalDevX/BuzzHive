@@ -1,4 +1,4 @@
-package com.dipumba.ytsocialapp.android.home.onboarding
+package com.example.instagram.android.home.onboarding
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
@@ -22,11 +22,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.instagram.android.R
-import com.example.instagram.android.common.dummy_data.FollowsUser
 import com.example.instagram.android.common.dummy_data.sampleUsers
 import com.example.instagram.android.common.theming.InstagramTheme
 import com.example.instagram.android.common.theming.LargeSpacing
 import com.example.instagram.android.common.theming.MediumSpacing
+import com.example.instagram.common.domain.model.FollowsUser
 
 @Composable
 fun OnBoardingSection(
@@ -107,7 +107,7 @@ private fun OnBoardingSectionPreview() {
     InstagramTheme {
         Surface(color = MaterialTheme.colors.background) {
             OnBoardingSection(
-                users = sampleUsers,
+                users = sampleUsers.map { it.toFollowsUser() },
                 onUserClick = {},
                 onFollowButtonClick = { _, _ -> },
                 onBoardingFinish = {}
@@ -122,7 +122,7 @@ private fun UsersRowPreview() {
     InstagramTheme {
         Surface(color = MaterialTheme.colors.background) {
             UsersRow(
-                users = sampleUsers,
+                users = sampleUsers.map { it.toFollowsUser() },
                 onUserClick = {},
                 onFollowButtonClick = { _, _ -> },
                 modifier = Modifier.padding(vertical = LargeSpacing)

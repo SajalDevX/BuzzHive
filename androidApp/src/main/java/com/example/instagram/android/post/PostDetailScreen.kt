@@ -26,7 +26,7 @@ import com.example.instagram.android.R
 import com.example.instagram.android.common.components.CommentListItem
 import com.example.instagram.android.common.components.PostListItem
 import com.example.instagram.android.common.dummy_data.sampleComments
-import com.example.instagram.android.common.dummy_data.samplePosts
+import com.example.instagram.android.common.dummy_data.sampleSamplePosts
 import com.example.instagram.android.common.theming.InstagramTheme
 import com.example.instagram.android.common.theming.LargeSpacing
 
@@ -44,15 +44,15 @@ fun PostDetailScreen(
         ) {
             CircularProgressIndicator()
         }
-    } else if(postUiState.post != null) {
+    } else if(postUiState.samplePost != null) {
         LazyColumn(
             modifier = modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colors.surface)
         ) {
-            item(key = "post") {
+            item(key = "samplePost") {
                 PostListItem(
-                    post = postUiState.post,
+                    samplePost = postUiState.samplePost,
                     onPostClick = {},
                     onProfileClick = {},
                     onLikeClick = {},
@@ -131,7 +131,7 @@ fun PostDetailPreview() {
             PostDetailScreen(
                 postUiState = PostUiState(
                     isLoading = false,
-                    post = samplePosts.first()
+                    samplePost = sampleSamplePosts.first()
                 ),
                 commentsUiState = CommentsUiState(
                     isLoading = false,

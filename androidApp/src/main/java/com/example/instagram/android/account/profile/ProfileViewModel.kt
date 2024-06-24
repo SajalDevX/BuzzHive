@@ -5,9 +5,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.instagram.android.common.dummy_data.Post
+import com.example.instagram.android.common.dummy_data.SamplePost
 import com.example.instagram.android.common.dummy_data.Profile
-import com.example.instagram.android.common.dummy_data.samplePosts
+import com.example.instagram.android.common.dummy_data.sampleSamplePosts
 import com.example.instagram.android.common.dummy_data.sampleProfiles
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,7 +33,7 @@ class ProfileViewModel : ViewModel(){
 
             profilePostsUiState = profilePostsUiState.copy(
                 isLoading = false,
-                posts = samplePosts
+                samplePosts = sampleSamplePosts
             )
         }
     }
@@ -47,6 +47,6 @@ data class UserInfoUiState(
 
 data class ProfilePostsUiState(
     val isLoading: Boolean = true,
-    val posts: List<Post> = listOf(),
+    val samplePosts: List<SamplePost> = listOf(),
     var errorMessage: String? = null
 )
