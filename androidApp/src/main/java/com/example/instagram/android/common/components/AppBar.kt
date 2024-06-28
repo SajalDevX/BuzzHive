@@ -12,16 +12,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
-import com.destinations.EditProfileDestination
-import com.destinations.FollowersDestination
-import com.destinations.FollowingDestination
-import com.destinations.HomeDestination
-import com.destinations.LoginDestination
-import com.destinations.PostDetailDestination
-import com.destinations.ProfileDestination
-import com.destinations.SignUpDestination
 import com.example.instagram.android.R
 import com.example.instagram.android.common.theming.SmallElevation
+import com.example.instagram.android.destinations.EditProfileDestination
+import com.example.instagram.android.destinations.FollowersDestination
+import com.example.instagram.android.destinations.FollowingDestination
+import com.example.instagram.android.destinations.HomeDestination
+import com.example.instagram.android.destinations.LoginDestination
+import com.example.instagram.android.destinations.PostDetailDestination
+import com.example.instagram.android.destinations.ProfileDestination
+import com.example.instagram.android.destinations.SignUpDestination
 import com.ramcosta.composedestinations.utils.currentDestinationAsState
 
 @Composable

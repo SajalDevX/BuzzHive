@@ -1,6 +1,6 @@
 package com.example.instagram.android.di
 
-import com.dipumba.ytsocialapp.android.post.PostDetailViewModel
+import com.example.instagram.android.post.PostDetailViewModel
 import com.example.instagram.android.MainActivityViewModel
 import com.example.instagram.android.account.edit.EditProfileViewModel
 import com.example.instagram.android.account.follows.FollowsViewModel
@@ -15,10 +15,9 @@ val appModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { SignUpViewModel(get()) }
     viewModel { MainActivityViewModel(get()) }
-    viewModel { HomeScreenViewModel(get(),get()) }
+    viewModel { HomeScreenViewModel(get(),get(),get(),get()) }
     viewModel { PostDetailViewModel() }
     viewModel { ProfileViewModel() }
     viewModel { EditProfileViewModel() }
     viewModel { FollowsViewModel() }
-
 }

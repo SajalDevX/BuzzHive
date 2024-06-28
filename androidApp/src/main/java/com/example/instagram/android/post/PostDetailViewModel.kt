@@ -1,4 +1,4 @@
-package com.dipumba.ytsocialapp.android.post
+package com.example.instagram.android.post
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.instagram.android.common.dummy_data.Comment
 import com.example.instagram.android.common.dummy_data.SamplePost
 import com.example.instagram.android.common.dummy_data.sampleComments
-import com.example.instagram.android.common.dummy_data.sampleSamplePosts
+import com.example.instagram.android.common.dummy_data.samplePosts
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -28,7 +28,7 @@ class PostDetailViewModel: ViewModel() {
 
             postUiState = postUiState.copy(
                 isLoading = false,
-                samplePost = sampleSamplePosts.find { it.id == postId }
+                samplePost = samplePosts.find { it.id == postId }
             )
 
             commentsUiState = commentsUiState.copy(

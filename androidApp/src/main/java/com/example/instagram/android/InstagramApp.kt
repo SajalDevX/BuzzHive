@@ -10,10 +10,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.NavGraphs
-import com.destinations.HomeDestination
-import com.destinations.LoginDestination
 import com.example.instagram.android.common.components.AppBar
+import com.example.instagram.android.destinations.HomeDestination
+import com.example.instagram.android.destinations.LoginDestination
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.ramcosta.composedestinations.DestinationsNavHost
 

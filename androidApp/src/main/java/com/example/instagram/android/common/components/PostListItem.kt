@@ -1,6 +1,8 @@
 package com.example.instagram.android.common.components
 
+import android.content.ContentValues.TAG
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color.Companion.Red
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -33,21 +36,24 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.instagram.android.R
 import com.example.instagram.android.common.dummy_data.SamplePost
-import com.example.instagram.android.common.dummy_data.sampleSamplePosts
+import com.example.instagram.android.common.dummy_data.samplePosts
+import com.example.instagram.android.common.theming.Black54
 import com.example.instagram.android.common.theming.DarkGray
 import com.example.instagram.android.common.theming.InstagramTheme
 import com.example.instagram.android.common.theming.LargeSpacing
 import com.example.instagram.android.common.theming.LightGray
 import com.example.instagram.android.common.theming.MediumSpacing
+import com.example.instagram.android.common.util.toCurrentUrl
+import com.example.instagram.common.domain.model.Post
 
 @Composable
 fun PostListItem(
     modifier: Modifier = Modifier,
-    samplePost: SamplePost,
-    onPostClick: (SamplePost) -> Unit,
-    onProfileClick: (Int) -> Unit,
-    onLikeClick: (SamplePost) -> Unit,
-    onCommentClick: (SamplePost) -> Unit,
+    post: Post,
+    onPostClick: (Post) -> Unit,
+    onProfileClick: (userId: Long) -> Unit,
+    onLikeClick: (Post) -> Unit,
+    onCommentClick: (Post) -> Unit,
     isDetailScreen: Boolean = false
 ) {
     Column(
@@ -55,21 +61,21 @@ fun PostListItem(
             .fillMaxWidth()
             .aspectRatio(ratio = 0.7f)
             .background(color = MaterialTheme.colors.surface)
-            .clickable { onPostClick(samplePost) }
+            .clickable { onPostClick(post) }
     ) {
         PostHeader(
-            name = samplePost.authorName,
-            profileUrl = samplePost.authorImage,
-            date = samplePost.createdAt,
+            name = post.userName,
+            profileUrl = post.userImageUrl,
+            date = post.createdAt,
             onProfileClick = {
                 onProfileClick(
-                    samplePost.authorId
+                    post.userId
                 )
             }
         )
-
+        Log.e("Post Image", "The image url is: ${post.imageUrl.toCurrentUrl()}")
         AsyncImage(
-            model = samplePost.imageUrl,
+            model = post.imageUrl.toCurrentUrl(),
             contentDescription = null,
             modifier = modifier
                 .fillMaxWidth()
@@ -83,14 +89,16 @@ fun PostListItem(
         )
 
         PostLikesRow(
-            likesCount = samplePost.likesCount,
-            commentCount = samplePost.commentCount,
-            onLikeClick = { onLikeClick(samplePost) },
-            onCommentClick = { onCommentClick(samplePost) }
+            likesCount = post.likesCount,
+            commentCount = post.commentsCount,
+            onLikeClick = { onLikeClick(post) },
+            onCommentClick = { onCommentClick(post) },
+            isPostLiked = post.isLiked
+
         )
 
         Text(
-            text = samplePost.text,
+            text = post.caption,
             style = MaterialTheme.typography.body2,
             modifier = modifier.padding(horizontal = LargeSpacing),
             maxLines = if (isDetailScreen) 10 else 2,
@@ -104,7 +112,7 @@ fun PostListItem(
 fun PostHeader(
     modifier: Modifier = Modifier,
     name: String,
-    profileUrl: String,
+    profileUrl: String?,
     date: String,
     onProfileClick: () -> Unit
 ) {
@@ -120,7 +128,7 @@ fun PostHeader(
     ) {
         CircleImage(
             modifier = modifier.size(30.dp),
-            url = profileUrl,
+            url = profileUrl?.toCurrentUrl(),
             onClick = onProfileClick
         )
 
@@ -175,6 +183,7 @@ fun PostLikesRow(
     modifier: Modifier = Modifier,
     likesCount: Int,
     commentCount: Int,
+    isPostLiked: Boolean,
     onLikeClick: () -> Unit,
     onCommentClick: () -> Unit
 ) {
@@ -191,10 +200,14 @@ fun PostLikesRow(
             onClick = onLikeClick
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.like_icon_outlined),
+                painter = if (!isPostLiked) {
+                    painterResource(id = R.drawable.like_icon_outlined)
+                } else {
+                    painterResource(id = R.drawable.like_icon_filled)
+                },
                 contentDescription = null,
-                tint = if (MaterialTheme.colors.isLight) {
-                    LightGray
+                tint = if (isPostLiked) {
+                    Red
                 } else {
                     DarkGray
                 }
@@ -236,7 +249,7 @@ private fun PostListItemPreview() {
     InstagramTheme {
         Surface(color = MaterialTheme.colors.surface) {
             PostListItem(
-                samplePost = sampleSamplePosts.first(),
+                post = samplePosts.first().toDomainPost(),
                 onPostClick = {},
                 onProfileClick = {},
                 onCommentClick = {},
@@ -271,7 +284,8 @@ private fun PostLikesRowPreview() {
                 likesCount = 12,
                 commentCount = 2,
                 onLikeClick = {},
-                onCommentClick = {}
+                onCommentClick = {},
+                isPostLiked = true
             )
         }
     }

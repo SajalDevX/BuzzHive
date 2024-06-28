@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.instagram.android.common.dummy_data.SamplePost
 import com.example.instagram.android.common.dummy_data.Profile
-import com.example.instagram.android.common.dummy_data.sampleSamplePosts
+import com.example.instagram.android.common.dummy_data.samplePosts
 import com.example.instagram.android.common.dummy_data.sampleProfiles
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -33,7 +33,7 @@ class ProfileViewModel : ViewModel(){
 
             profilePostsUiState = profilePostsUiState.copy(
                 isLoading = false,
-                samplePosts = sampleSamplePosts
+                samplePosts = samplePosts
             )
         }
     }

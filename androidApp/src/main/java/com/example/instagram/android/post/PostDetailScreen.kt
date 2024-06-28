@@ -1,4 +1,4 @@
-package com.dipumba.ytsocialapp.android.post
+package com.example.instagram.android.post
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
@@ -26,7 +26,7 @@ import com.example.instagram.android.R
 import com.example.instagram.android.common.components.CommentListItem
 import com.example.instagram.android.common.components.PostListItem
 import com.example.instagram.android.common.dummy_data.sampleComments
-import com.example.instagram.android.common.dummy_data.sampleSamplePosts
+import com.example.instagram.android.common.dummy_data.samplePosts
 import com.example.instagram.android.common.theming.InstagramTheme
 import com.example.instagram.android.common.theming.LargeSpacing
 
@@ -52,7 +52,7 @@ fun PostDetailScreen(
         ) {
             item(key = "samplePost") {
                 PostListItem(
-                    samplePost = postUiState.samplePost,
+                    post = postUiState.samplePost.toDomainPost(),
                     onPostClick = {},
                     onProfileClick = {},
                     onLikeClick = {},
@@ -131,7 +131,7 @@ fun PostDetailPreview() {
             PostDetailScreen(
                 postUiState = PostUiState(
                     isLoading = false,
-                    samplePost = sampleSamplePosts.first()
+                    samplePost = samplePosts.first()
                 ),
                 commentsUiState = CommentsUiState(
                     isLoading = false,

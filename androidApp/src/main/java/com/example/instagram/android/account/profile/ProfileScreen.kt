@@ -45,6 +45,7 @@ import com.example.instagram.android.common.theming.LargeSpacing
 import com.example.instagram.android.common.theming.MediumSpacing
 import com.example.instagram.android.common.theming.SmallSpacing
 
+
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
@@ -85,8 +86,8 @@ fun ProfileScreen(
                 key = {post -> post.id}
             ){
                 PostListItem(
-                    samplePost = it,
-                    onPostClick = onPostClick,
+                    post = it.toDomainPost(),
+                    onPostClick = {},
                     onProfileClick = {},
                     onLikeClick = {},
                     onCommentClick = {}
@@ -230,6 +231,8 @@ fun ProfileHeaderPreview() {
         }
     }
 }
+
+
 
 
 

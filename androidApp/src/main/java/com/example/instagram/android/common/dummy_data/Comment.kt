@@ -18,7 +18,7 @@ val sampleComments = listOf(
         authorName = sampleUsers[0].name,
         authorImageUrl = sampleUsers[0].profileUrl,
         authorId = sampleUsers[0].id,
-        postId = sampleSamplePosts[0].id
+        postId = samplePosts[0].id
     ),
     Comment(
         id = "comment2",
@@ -27,7 +27,7 @@ val sampleComments = listOf(
         authorName = sampleUsers[1].name,
         authorImageUrl = sampleUsers[1].profileUrl,
         authorId = sampleUsers[1].id,
-        postId = sampleSamplePosts[0].id
+        postId = samplePosts[0].id
     ),
     Comment(
         id = "comment3",
@@ -36,7 +36,7 @@ val sampleComments = listOf(
         authorName = sampleUsers[2].name,
         authorImageUrl = sampleUsers[2].profileUrl,
         authorId = sampleUsers[2].id,
-        postId = sampleSamplePosts[0].id
+        postId = samplePosts[0].id
     ),
     Comment(
         id = "comment4",
@@ -45,6 +45,6 @@ val sampleComments = listOf(
         authorName = sampleUsers[3].name,
         authorImageUrl = sampleUsers[3].profileUrl,
         authorId = sampleUsers[3].id,
-        postId = sampleSamplePosts[0].id
+        postId = samplePosts[0].id
     )
 )

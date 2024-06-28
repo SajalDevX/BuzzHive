@@ -1,9 +1,9 @@
 package com.example.instagram.android.auth.login
 
 import androidx.compose.runtime.Composable
-import com.destinations.HomeDestination
-import com.destinations.LoginDestination
-import com.destinations.SignUpDestination
+import com.example.instagram.android.destinations.HomeDestination
+import com.example.instagram.android.destinations.LoginDestination
+import com.example.instagram.android.destinations.SignUpDestination
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import org.koin.androidx.compose.koinViewModel

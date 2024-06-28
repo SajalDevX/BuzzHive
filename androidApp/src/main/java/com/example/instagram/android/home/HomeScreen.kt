@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -15,6 +17,10 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -27,6 +33,9 @@ import com.example.instagram.android.R
 import com.example.instagram.android.common.dummy_data.SamplePost
 import com.example.instagram.android.common.theming.InstagramTheme
 import com.example.instagram.android.common.theming.LargeSpacing
+import com.example.instagram.android.common.theming.MediumSpacing
+import com.example.instagram.android.common.util.Constants
+import com.example.instagram.common.domain.model.Post
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -35,15 +44,29 @@ fun HomeScreen(
     onBoardingUiState: OnBoardingUiState,
     postFeedUiState: PostFeedUiState,
     homeRefreshState: HomeRefreshState,
-    onUiAction:(HomeUiAction)->Unit,
-    onProfileNavigation: (userId:Long) -> Unit,
-    onPostDetailNavigation: (SamplePost) -> Unit,
+    onUiAction: (HomeUiAction) -> Unit,
+    onProfileNavigation: (userId: Long) -> Unit,
+    onPostDetailNavigation: (Post) -> Unit,
 ) {
 
     val pullRefreshState = rememberPullRefreshState(
         refreshing = homeRefreshState.isRefreshing,
         onRefresh = { onUiAction(HomeUiAction.RefreshAction) },
     )
+    val listState = rememberLazyListState()
+    val shouldFetchMorePosts by remember {
+        derivedStateOf {
+            val layoutInfo = listState.layoutInfo
+            val visibleItemsInfo = layoutInfo.visibleItemsInfo
+
+            if (layoutInfo.totalItemsCount == 0) {
+                false
+            }else{
+                val lastVisibleItem = visibleItemsInfo.last()
+                (lastVisibleItem.index + 1 == layoutInfo.totalItemsCount)
+            }
+        }
+    }
 
     Box(
         modifier = modifier
@@ -51,6 +74,7 @@ fun HomeScreen(
             .pullRefresh(state = pullRefreshState)
     ) {
         LazyColumn(
+            state = listState,
             modifier = modifier
                 .fillMaxSize()
         ) {
@@ -59,7 +83,7 @@ fun HomeScreen(
                     OnBoardingSection(
                         users = onBoardingUiState.followableUsers,
                         onUserClick = { onProfileNavigation(it.id) },
-                        onFollowButtonClick = { _,user->
+                        onFollowButtonClick = { _, user ->
                             onUiAction(
                                 HomeUiAction.FollowUserAction(user)
                             )
@@ -78,14 +102,26 @@ fun HomeScreen(
                 }
             }
 
-            items(items = postFeedUiState.samplePosts, key = { post -> post.id }) { post->
+            items(items = postFeedUiState.posts, key = { post -> post.postId }) { post ->
                 PostListItem(
-                    samplePost = post,
+                    post = post,
                     onPostClick = { onPostDetailNavigation(it) },
                     onProfileClick = { onProfileNavigation(it.toLong()) },
-                    onLikeClick = { onUiAction(HomeUiAction.PostLikeAction(it.toDomainPost())) },
+                    onLikeClick = { onUiAction(HomeUiAction.PostLikeAction(it)) },
                     onCommentClick = { onPostDetailNavigation(it) }
                 )
+            }
+            if (postFeedUiState.isLoading && postFeedUiState.posts.isNotEmpty()) {
+                item(key = Constants.LOADING_MORE_ITEM_KEY) {
+                    Box(
+                        modifier = modifier
+                            .fillMaxWidth()
+                            .padding(vertical = MediumSpacing, horizontal = LargeSpacing),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
             }
         }
 
@@ -94,6 +130,11 @@ fun HomeScreen(
             state = pullRefreshState,
             modifier = modifier.align(Alignment.TopCenter)
         )
+        LaunchedEffect(key1 = shouldFetchMorePosts) {
+            if (shouldFetchMorePosts && !postFeedUiState.endReached) {
+                onUiAction(HomeUiAction.LoadMorePostsAction)
+            }
+        }
     }
 }
 
