@@ -51,4 +51,21 @@ internal class PostApiService : KtorApi() {
         }
         return LikeApiResponse(code = httpResponse.status, data = httpResponse.body())
     }
+
+    suspend fun getUserPosts(
+        token: String,
+        userId: Long,
+        currentUserId: Long,
+        page: Int,
+        pageSize: Int
+    ): PostsApiResponse {
+        val httpResponse = client.get {
+            endPoint(path = "/posts/$userId")
+            parameter(key = Constants.CURRENT_USER_ID_PARAMETER, value = currentUserId)
+            parameter(key = Constants.PAGE_QUERY_PARAMETER, value = page)
+            parameter(key = Constants.PAGE_SIZE_QUERY_PARAMETER, value = pageSize)
+            setToken(token = token)
+        }
+        return PostsApiResponse(code = httpResponse.status, data = httpResponse.body())
+    }
 }
